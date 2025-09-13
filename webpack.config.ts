@@ -118,7 +118,10 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
       path: path.join(__dirname, 'dist', path.relative(path.join(__dirname, 'src'), script_filepath.dir)),
       chunkFilename: `${script_filepath.name}.[contenthash].chunk.js`,
       asyncChunks: true,
+<<<<<<< HEAD
       chunkLoading: 'import',
+=======
+>>>>>>> 56aa0be436939e9e252dae49f7e3d86b2441513c
       clean: true,
       publicPath: '',
       library: {
@@ -349,10 +352,20 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
         'vue-router': 'VueRouter',
         yaml: 'YAML',
         zod: 'z',
+<<<<<<< HEAD
+=======
+        'pixi.js': 'PIXI',
+>>>>>>> 56aa0be436939e9e252dae49f7e3d86b2441513c
       };
       if (request in builtin) {
         return callback(null, 'var ' + builtin[request as keyof typeof builtin]);
       }
+<<<<<<< HEAD
+=======
+      if (['vue3-pixi', 'vue-demi'].includes(request)) {
+        return callback();
+      }
+>>>>>>> 56aa0be436939e9e252dae49f7e3d86b2441513c
       return callback(null, 'module-import https://testingcf.jsdelivr.net/npm/' + request + '/+esm');
     },
   });
