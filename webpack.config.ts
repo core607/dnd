@@ -118,7 +118,10 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
       path: path.join(__dirname, 'dist', path.relative(path.join(__dirname, 'src'), script_filepath.dir)),
       chunkFilename: `${script_filepath.name}.[contenthash].chunk.js`,
       asyncChunks: true,
+<<<<<<< HEAD
       chunkLoading: 'import',
+=======
+>>>>>>> eea3fdb9001064d40a9b26593495d8cc9f1bafcb
       clean: true,
       publicPath: '',
       library: {
@@ -210,12 +213,25 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
                   },
                   {
                     test: /\.s(a|c)ss$/,
+<<<<<<< HEAD
                     use: [{ loader: 'css-loader', options: { url: false } }, 'postcss-loader', 'sass-loader'],
+=======
+                    use: [
+                      'style-loader',
+                      { loader: 'css-loader', options: { url: false } },
+                      'postcss-loader',
+                      'sass-loader',
+                    ],
+>>>>>>> eea3fdb9001064d40a9b26593495d8cc9f1bafcb
                     exclude: /node_modules/,
                   },
                   {
                     test: /\.css$/,
+<<<<<<< HEAD
                     use: [{ loader: 'css-loader', options: { url: false } }, 'postcss-loader'],
+=======
+                    use: ['style-loader', { loader: 'css-loader', options: { url: false } }, 'postcss-loader'],
+>>>>>>> eea3fdb9001064d40a9b26593495d8cc9f1bafcb
                     exclude: /node_modules/,
                   },
                 ]
@@ -287,7 +303,11 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
           : [],
       ),
     optimization: {
+<<<<<<< HEAD
       minimize: true,
+=======
+      minimize: false,
+>>>>>>> eea3fdb9001064d40a9b26593495d8cc9f1bafcb
       minimizer: [
         argv.mode === 'production'
           ? new TerserPlugin({
@@ -349,10 +369,20 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
         'vue-router': 'VueRouter',
         yaml: 'YAML',
         zod: 'z',
+<<<<<<< HEAD
+=======
+        'pixi.js': 'PIXI',
+>>>>>>> eea3fdb9001064d40a9b26593495d8cc9f1bafcb
       };
       if (request in builtin) {
         return callback(null, 'var ' + builtin[request as keyof typeof builtin]);
       }
+<<<<<<< HEAD
+=======
+      if (['vue3-pixi', 'vue-demi'].includes(request)) {
+        return callback();
+      }
+>>>>>>> eea3fdb9001064d40a9b26593495d8cc9f1bafcb
       return callback(null, 'module-import https://testingcf.jsdelivr.net/npm/' + request + '/+esm');
     },
   });
