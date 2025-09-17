@@ -118,7 +118,10 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
       path: path.join(__dirname, 'dist', path.relative(path.join(__dirname, 'src'), script_filepath.dir)),
       chunkFilename: `${script_filepath.name}.[contenthash].chunk.js`,
       asyncChunks: true,
+<<<<<<< HEAD
       chunkLoading: 'import',
+=======
+>>>>>>> 1349a1eca67bfd36b54caff30e3fa18c2c7fa8e3
       clean: true,
       publicPath: '',
       library: {
@@ -210,12 +213,25 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
                   },
                   {
                     test: /\.s(a|c)ss$/,
+<<<<<<< HEAD
                     use: [{ loader: 'css-loader', options: { url: false } }, 'postcss-loader', 'sass-loader'],
+=======
+                    use: [
+                      'style-loader',
+                      { loader: 'css-loader', options: { url: false } },
+                      'postcss-loader',
+                      'sass-loader',
+                    ],
+>>>>>>> 1349a1eca67bfd36b54caff30e3fa18c2c7fa8e3
                     exclude: /node_modules/,
                   },
                   {
                     test: /\.css$/,
+<<<<<<< HEAD
                     use: [{ loader: 'css-loader', options: { url: false } }, 'postcss-loader'],
+=======
+                    use: ['style-loader', { loader: 'css-loader', options: { url: false } }, 'postcss-loader'],
+>>>>>>> 1349a1eca67bfd36b54caff30e3fa18c2c7fa8e3
                     exclude: /node_modules/,
                   },
                 ]
@@ -287,7 +303,11 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
           : [],
       ),
     optimization: {
+<<<<<<< HEAD
       minimize: true,
+=======
+      minimize: false,
+>>>>>>> 1349a1eca67bfd36b54caff30e3fa18c2c7fa8e3
       minimizer: [
         argv.mode === 'production'
           ? new TerserPlugin({
@@ -341,7 +361,15 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
         return callback();
       }
 
+<<<<<<< HEAD
       const builtin = {
+=======
+      const builtin = ['vue3-pixi', 'vue-demi'];
+      if (builtin.includes(request)) {
+        return callback();
+      }
+      const global = {
+>>>>>>> 1349a1eca67bfd36b54caff30e3fa18c2c7fa8e3
         jquery: '$',
         lodash: '_',
         toastr: 'toastr',
@@ -349,11 +377,26 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
         'vue-router': 'VueRouter',
         yaml: 'YAML',
         zod: 'z',
+<<<<<<< HEAD
       };
       if (request in builtin) {
         return callback(null, 'var ' + builtin[request as keyof typeof builtin]);
       }
       return callback(null, 'module-import https://testingcf.jsdelivr.net/npm/' + request + '/+esm');
+=======
+        'pixi.js': 'PIXI',
+      };
+      if (request in global) {
+        return callback(null, 'var ' + global[request as keyof typeof global]);
+      }
+      const cdn = {
+        sass: 'https://jspm.dev/sass',
+      };
+      return callback(
+        null,
+        'module-import ' + (cdn[request as keyof typeof cdn] ?? `https://testingcf.jsdelivr.net/npm/${request}/+esm`),
+      );
+>>>>>>> 1349a1eca67bfd36b54caff30e3fa18c2c7fa8e3
     },
   });
 }
