@@ -118,7 +118,10 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
       path: path.join(__dirname, 'dist', path.relative(path.join(__dirname, 'src'), script_filepath.dir)),
       chunkFilename: `${script_filepath.name}.[contenthash].chunk.js`,
       asyncChunks: true,
+<<<<<<< HEAD
       chunkLoading: 'import',
+=======
+>>>>>>> ffd4084071b1bcc5c10d43ca5a0ee996ddbcf06c
       clean: true,
       publicPath: '',
       library: {
@@ -210,12 +213,25 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
                   },
                   {
                     test: /\.s(a|c)ss$/,
+<<<<<<< HEAD
                     use: [{ loader: 'css-loader', options: { url: false } }, 'postcss-loader', 'sass-loader'],
+=======
+                    use: [
+                      'style-loader',
+                      { loader: 'css-loader', options: { url: false } },
+                      'postcss-loader',
+                      'sass-loader',
+                    ],
+>>>>>>> ffd4084071b1bcc5c10d43ca5a0ee996ddbcf06c
                     exclude: /node_modules/,
                   },
                   {
                     test: /\.css$/,
+<<<<<<< HEAD
                     use: [{ loader: 'css-loader', options: { url: false } }, 'postcss-loader'],
+=======
+                    use: ['style-loader', { loader: 'css-loader', options: { url: false } }, 'postcss-loader'],
+>>>>>>> ffd4084071b1bcc5c10d43ca5a0ee996ddbcf06c
                     exclude: /node_modules/,
                   },
                 ]
@@ -272,7 +288,11 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
           }),
         ]
     )
+<<<<<<< HEAD
       .concat({ apply: watch_it }, new VueLoaderPlugin())
+=======
+      .concat({ apply: watch_it }, new VueLoaderPlugin(), new webpack.optimize.LimitChunkCountPlugin({ maxChunks: 1 }))
+>>>>>>> ffd4084071b1bcc5c10d43ca5a0ee996ddbcf06c
       .concat(
         should_obfuscate
           ? [
@@ -287,7 +307,11 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
           : [],
       ),
     optimization: {
+<<<<<<< HEAD
       minimize: true,
+=======
+      minimize: false,
+>>>>>>> ffd4084071b1bcc5c10d43ca5a0ee996ddbcf06c
       minimizer: [
         argv.mode === 'production'
           ? new TerserPlugin({
@@ -341,7 +365,15 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
         return callback();
       }
 
+<<<<<<< HEAD
       const builtin = {
+=======
+      const builtin = ['vue3-pixi', 'vue-demi'];
+      if (builtin.includes(request)) {
+        return callback();
+      }
+      const global = {
+>>>>>>> ffd4084071b1bcc5c10d43ca5a0ee996ddbcf06c
         jquery: '$',
         lodash: '_',
         toastr: 'toastr',
@@ -349,11 +381,26 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
         'vue-router': 'VueRouter',
         yaml: 'YAML',
         zod: 'z',
+<<<<<<< HEAD
       };
       if (request in builtin) {
         return callback(null, 'var ' + builtin[request as keyof typeof builtin]);
       }
       return callback(null, 'module-import https://testingcf.jsdelivr.net/npm/' + request + '/+esm');
+=======
+        'pixi.js': 'PIXI',
+      };
+      if (request in global) {
+        return callback(null, 'var ' + global[request as keyof typeof global]);
+      }
+      const cdn = {
+        sass: 'https://jspm.dev/sass',
+      };
+      return callback(
+        null,
+        'module-import ' + (cdn[request as keyof typeof cdn] ?? `https://testingcf.jsdelivr.net/npm/${request}/+esm`),
+      );
+>>>>>>> ffd4084071b1bcc5c10d43ca5a0ee996ddbcf06c
     },
   });
 }
