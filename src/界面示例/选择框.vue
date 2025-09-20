@@ -1,7 +1,17 @@
 <template>
   <div class="roleplay_options">
     <div class="roleplay_options_back">
+<<<<<<< HEAD
       <div class="roleplay_options_item" tabindex="1" v-for="item in items" @click="handle_item_click(item)">
+=======
+      <div
+        v-for="item in items"
+        :key="item.title"
+        class="roleplay_options_item"
+        tabindex="1"
+        @click="handle_item_click(item)"
+      >
+>>>>>>> abf5ab2721ef8aa1cccce26ac4d7afd734ec14b4
         <span class="roleplay_options_title">
           <strong>{{ item.title }}</strong>
         </span>
