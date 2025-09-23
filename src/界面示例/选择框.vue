@@ -1,7 +1,17 @@
 <template>
   <div class="roleplay_options">
     <div class="roleplay_options_back">
+<<<<<<< HEAD
       <div class="roleplay_options_item" tabindex="1" v-for="item in items" @click="handle_item_click(item)">
+=======
+      <div
+        v-for="item in items"
+        :key="item.title"
+        class="roleplay_options_item"
+        tabindex="1"
+        @click="handle_item_click(item)"
+      >
+>>>>>>> 5e885b7ae834206899b44047b20624e55ec868f0
         <span class="roleplay_options_title">
           <strong>{{ item.title }}</strong>
         </span>
@@ -13,8 +23,11 @@
 </template>
 
 <script setup lang="ts">
+<<<<<<< HEAD
 import { onMounted, ref } from 'vue';
 
+=======
+>>>>>>> 5e885b7ae834206899b44047b20624e55ec868f0
 interface RoleplayOption {
   title: string;
   content: string;
