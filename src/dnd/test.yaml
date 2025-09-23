@@ -1,0 +1,67 @@
+  选择框:
+    rule:
+      - you must output the roleplay options wrapped in <options> tags at the end of each reply
+      - you can only output 20 to 50 Chinese words in total for options
+      - each option inside the roleplay options must completely differ from others in titles and contents, leading to various creative plot directions
+      - 'you should prioritize generating options whose `context` matches the current scene, then try to ensure variety' # 优化规则：优先保证上下文匹配，再追求多样性
+      - '**选项必须符合人设，且接续剧情，在空间、行为上保持人设**'
+    format:
+      basic: |-
+        <options>
+        ${按照content而非type拟定标题}:${content，必须以第一人称输出行为的主语}$(如果content描述的行为结果不确定，则在此处添加对应的D&D 5e检定，格式为(检定类型))
+        ...$(generate 6 options based on the rules and types below)
+        </options>
+    option_type:
+      - type: '普通发展'
+        context: [通用]
+        content: '${根据当前的情况，合理构思一个可能出现的不同发展}'
+      - type: '背景强化'
+        context: [社交, 探索, 通用]
+        content: '${根据`<user_status_readonly>`中的背景，合理构思一个符合背景设定的选项}'
+        example: '作为一个[士兵]，我会先观察敌人的阵型和纪律，寻找弱点。'
+      - type: '战斗特化'
+        context: [战斗]
+        directive: |-
+          $(指令优先级：
+          1. 严格检查`<user_status_readonly>`中的`法术书`和`已知戏法`。若有可用法术，必须优先生成施法选项。
+          2. 若无可用法术，则检查`<status_current_variables>`中的`能力特性`。若有可用特性（如“奥术回想”），可生成使用该特性的选项（如果战斗中适用）。
+          3. 若前两者均无或不适用，则必须检查`<status_current_variables>`的`装备栏`，并生成使用当前武器（如“法杖”）进行近战或远程攻击的选项。
+          4. 绝对禁止生成角色数据中不存在的任何法术、能力或物品。)
+        content: '${根据上述指令优先级找到的、角色确实拥有的一个具体行动，构思一个精准的战斗选项}'
+      - type: '利用场景'
+        context: [战斗, 探索, 潜行]
+        directive: "$(选项内容应包含以下元素之一：环境互动, 物品利用, 隐蔽行为)"
+        content: '${结合场景和角色当前信息，构思一个利用场景的互动}'
+        example: '我会踢倒旁边的油灯，制造混乱，然后趁机溜走。'
+      - type: '同伴协同'
+        context: [战斗, 社交, 探索]
+        directive: "$(检查队伍中的同伴，构思一个利用他们能力或让他们行动的选项)"
+        content: '${让队伍中的一名同伴执行一个符合他/她能力或性格的行动}'
+        example: '我会示意莱埃泽尔从高处进行压制，自己则从正面吸引注意力。'
+      - type: '冲突升级'
+        context: [社交, 战斗]
+        directive: "$(选项必须是以下类型之一：高风险高回报；包含关键线索的无关选择；符合隐藏动机的违常选择)"
+        content: '${构思一个能让冲突升级或剧情急转直下的选择}'
+      - type: '伏笔植入'
+        context: [探索, 社交]
+        directive: "$(选项内容必须包含本场景特有元素，并暗示未来的危机或机遇)"
+        content: '${构思一个能植入伏笔的互动或选择}'
+        example: '我会偷偷收起那枚刻有奇特符号的徽章，以后或许用得上。'
+      - type: '科恩叙事'
+        context: [社交, 通用]
+        directive: "$(选项必须符合科恩兄弟风格：构成环形叙事起点、包含无关细节道具、对话体现存在主义危机)"
+        content: '${设计一个科恩风格的选项}'
+        example: '我不会回答他的问题，而是反问他那块地毯是否真的能让整个房间更有格调。'
+      - type: '魔鬼低语'
+        context: [社交, 个人]
+        directive: "$(设计一个看似有利可图，但会挑战角色道德底线的选择)"
+        content: '${通过诱惑性言辞，设计一个引导角色犯下特定罪行或走向歧途的剧情发展}'
+        example: '也许我应该拿走这笔钱。毕竟，死人是用不着它的，而我需要。'
+      - type: '罗曼蒂克选项'
+        context: [社交, 个人] # 仅在有合适的NPC且非战斗的场景下使用
+        directive: "$(分析角色性格和当前场景氛围，只在合适的时机生成)"
+        content: '${构思一个浪漫或暧昧的剧情发展，以推进角色间的恋爱进程}'
+      - type: '跳过场景'
+        context: [通用]
+        directive: "$(当前轮次必须生成一个跳过场景的选项)"
+        content: '${用概括性语言跳过当前动作，直接展开下一场景}'
