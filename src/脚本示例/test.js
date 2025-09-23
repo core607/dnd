@@ -2697,48 +2697,48 @@ eventOn('mag_variable_update_ended', variables => {
    * @param {string} type - '主职业' 或 '子职业'
    * @param {string} [subclassName] - 子职业名 (如果type是'子职业')
    */
-function processFeaturesForLevel(className, level, type, subclassName = '') {
-  // 注意：我们将 existingFeatureNames 移到循环外获取一次即可
-  const existingFeatureNames = _.map(_.get(主角, '能力特性'), '名称');
-  let featuresSource = {};
+  function processFeaturesForLevel(className, level, type, subclassName = '') {
+    // 注意：我们将 existingFeatureNames 移到循环外获取一次即可
+    const existingFeatureNames = _.map(_.get(主角, '能力特性'), '名称');
+    let featuresSource = {};
 
-  if (type === '主职业') {
-    featuresSource = CLASS_FEATURES_DATA;
-  } else {
-    featuresSource = SUBCLASS_FEATURES_DATA;
-  }
-
-  const path = subclassName
-    ? `${className}.${subclassName}.featuresByLevel.${level}`
-    : `${className}.featuresByLevel.${level}`;
-  const featuresForLevel = _.get(featuresSource, path, []);
-
-  featuresForLevel.forEach(featureData => {
-    if (featureData.类型 === 'Upgrade') {
-      // 这是升级指令
-      const targetName = featureData.targetFeature;
-      if (_.has(主角, `能力特性.${targetName}`)) {
-        featureData.updates.forEach(update => {
-          const fullPath = `能力特性.${targetName}.${update.path}`;
-          _.set(主角, fullPath, update.value);
-        });
-        console.log(`[特性升级] 已为 [${主角.身份.姓名}] 升级${type}特性: [${targetName}]`);
-      }
-    } else if (!existingFeatureNames.includes(featureData.名称)) {
-      // ▼▼▼ 核心修改点 ▼▼▼
-      // 使用 else if 替代了原来的 else { if (...) } 结构
-      // 这是普通的新特性授予
-      const newFeature = JSON.parse(JSON.stringify(NEW_FEATURE_TEMPLATE));
-      Object.keys(featureData).forEach(key => {
-        _.set(newFeature, key, featureData[key]);
-      });
-      _.set(主角, `能力特性.${featureData.名称}`, newFeature);
-      console.log(`[特性授予] 已为 [${主角.身份.姓名}] 添加${type}特性: [${featureData.名称}]`);
-      // 授予新特性后，需要将其名称加入到“已拥有”列表，以防在同一轮循环中被重复判断
-      existingFeatureNames.push(featureData.名称);
+    if (type === '主职业') {
+      featuresSource = CLASS_FEATURES_DATA;
+    } else {
+      featuresSource = SUBCLASS_FEATURES_DATA;
     }
-  });
-}
+
+    const path = subclassName
+      ? `${className}.${subclassName}.featuresByLevel.${level}`
+      : `${className}.featuresByLevel.${level}`;
+    const featuresForLevel = _.get(featuresSource, path, []);
+
+    featuresForLevel.forEach(featureData => {
+      if (featureData.类型 === 'Upgrade') {
+        // 这是升级指令
+        const targetName = featureData.targetFeature;
+        if (_.has(主角, `能力特性.${targetName}`)) {
+          featureData.updates.forEach(update => {
+            const fullPath = `能力特性.${targetName}.${update.path}`;
+            _.set(主角, fullPath, update.value);
+          });
+          console.log(`[特性升级] 已为 [${主角.身份.姓名}] 升级${type}特性: [${targetName}]`);
+        }
+      } else if (!existingFeatureNames.includes(featureData.名称)) {
+        // ▼▼▼ 核心修改点 ▼▼▼
+        // 使用 else if 替代了原来的 else { if (...) } 结构
+        // 这是普通的新特性授予
+        const newFeature = JSON.parse(JSON.stringify(NEW_FEATURE_TEMPLATE));
+        Object.keys(featureData).forEach(key => {
+          _.set(newFeature, key, featureData[key]);
+        });
+        _.set(主角, `能力特性.${featureData.名称}`, newFeature);
+        console.log(`[特性授予] 已为 [${主角.身份.姓名}] 添加${type}特性: [${featureData.名称}]`);
+        // 授予新特性后，需要将其名称加入到“已拥有”列表，以防在同一轮循环中被重复判断
+        existingFeatureNames.push(featureData.名称);
+      }
+    });
+  }
 
   console.log(`规则引擎：为 [${_.get(主角, '身份.姓名', '未知角色')}] 的处理已全部完成。`);
 });

@@ -28,4 +28,3 @@ export const SUBCLASS_OPTIONS: Record<string, string[]> = {
   德鲁伊: ['月亮结社', '大地结社', '梦想结社'],
   野蛮人: ['狂战士之道', '图腾武士之道', '狂热者之道'],
 };
-
