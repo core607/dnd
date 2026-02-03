@@ -1,8 +1,17 @@
 {
   "mcpServers": {
+<<<<<<< HEAD
     "browsermcp": {
       "command": "npx",
       "args": ["@browsermcp/mcp@latest"]
+=======
+    "chrome-devtools": {
+      "command": "pnpx",
+      "args": [
+        "chrome-devtools-mcp@latest",
+        "--autoConnect"
+      ]
+>>>>>>> 657d325b384170d58b72e3fe3cc38173e31a414a
     }
   }
 }
